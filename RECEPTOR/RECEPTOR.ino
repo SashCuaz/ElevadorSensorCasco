@@ -1,36 +1,30 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #define LEDRED 2
-typedef struct struct_message {
-    char a[32];
-    int b;
-    float c;
-    bool d;
-} struct_message;
+#define LEDAMBAR 4
+int tiempo, i;
+
+typedef struct STRUCT_MENSAJE 
+  {
+    int  VALOR;
+  } STRUCT_MENSAJE;
 
 
-struct_message myData;
+STRUCT_MENSAJE MI_DATO;
 
 
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  memcpy(&myData, incomingData, sizeof(myData));
-  Serial.print("Bytes received: ");
-  Serial.println(len);
-  Serial.print("Char: ");
-  Serial.println(myData.a);
+void RECIBO_DE_DATOS(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  memcpy(&MI_DATO, incomingData, sizeof(MI_DATO));
   Serial.print("Int: ");
-  Serial.println(myData.b);
-  Serial.print("Float: ");
-  Serial.println(myData.c);
-  Serial.print("Bool: ");
-  Serial.println(myData.d);
-  Serial.println();
+  Serial.println(MI_DATO.VALOR);
+
 }
  
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(115200);
   pinMode(LEDRED, OUTPUT);
+  pinMode(LEDAMBAR, OUTPUT);
   // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
 
@@ -40,19 +34,54 @@ void setup() {
     return;
   }
 
-  esp_now_register_recv_cb(OnDataRecv);
 }
+void ALARMA_LUZ()
+{   
+  /////////////////////////////////AMBAR 10s///////////////////////////
+   for(int i = 0; i < 10; i++)
+    {
+      digitalWrite(LEDAMBAR, HIGH);
+      delay(500);
+      digitalWrite(LEDAMBAR, LOW);
+      delay(500);
+    }
+/////////////////////////////////AMBAR RED 5s///////////////////////////
+  for(int j = 0; j < 5; j++)
+    {
+      digitalWrite(LEDRED, HIGH);
+      delay(500);
+      digitalWrite(LEDRED, LOW);
+      delay(500);
+    }
+
+///////////////////////////////// RED 5s///////////////////////////
+
+  digitalWrite(LEDRED, HIGH);
+  delay(5000);
+  digitalWrite(LEDRED, LOW);
+  delay(10);
+
+  
+}
+
+
+
  
 void loop() 
 {
 
-  if(myData.b == 8)
+  esp_now_register_recv_cb(RECIBO_DE_DATOS);
+  if(MI_DATO.VALOR == 1)
   {
-    digitalWrite(LEDRED, HIGH);
+    delay(10);
+    ALARMA_LUZ();
+    delay(10);
+   
   }
-  else 
+  else if (MI_DATO.VALOR == 0)
   {
     digitalWrite(LEDRED, LOW);
+    digitalWrite(LEDAMBAR, LOW);
   }
 
 }
