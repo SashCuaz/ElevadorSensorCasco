@@ -4,6 +4,8 @@
 #define LEDAMBAR 4
 int tiempo, i;
 
+/* HECTOR */
+
 typedef struct STRUCT_MENSAJE 
   {
     int  VALOR;
