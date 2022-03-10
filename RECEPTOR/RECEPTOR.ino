@@ -2,11 +2,11 @@
 #include <WiFi.h>
 #define LEDRED 2
 #define LEDAMBAR 4
-int tiempo, i;
+int tiempo, i, j;
 
-/* HECTOR */
+/* ISMAEL */
 
-typedef struct STRUCT_MENSAJE 
+typedef struct STRUCT_MENSAJE
   {
     int  VALOR;
   } STRUCT_MENSAJE;
@@ -15,13 +15,13 @@ typedef struct STRUCT_MENSAJE
 STRUCT_MENSAJE MI_DATO;
 
 
-void RECIBO_DE_DATOS(const uint8_t * mac, const uint8_t *incomingData, int len) {
+void RECIBO_DE_DATOS(const uint8_t * mac, const uint8_t *incomingData, int len)
+{
   memcpy(&MI_DATO, incomingData, sizeof(MI_DATO));
   Serial.print("Int: ");
   Serial.println(MI_DATO.VALOR);
-
 }
- 
+
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(115200);
@@ -38,7 +38,7 @@ void setup() {
 
 }
 void ALARMA_LUZ()
-{   
+{
   /////////////////////////////////AMBAR 10s///////////////////////////
    for(int i = 0; i < 10; i++)
     {
@@ -63,13 +63,9 @@ void ALARMA_LUZ()
   digitalWrite(LEDRED, LOW);
   delay(10);
 
-  
+
 }
-
-
-
- 
-void loop() 
+void loop()
 {
 
   esp_now_register_recv_cb(RECIBO_DE_DATOS);
@@ -78,7 +74,7 @@ void loop()
     delay(10);
     ALARMA_LUZ();
     delay(10);
-   
+
   }
   else if (MI_DATO.VALOR == 0)
   {
