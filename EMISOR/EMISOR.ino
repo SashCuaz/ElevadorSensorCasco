@@ -78,7 +78,6 @@ printf( "FIRMWARE VERSION: ");
       Serial.println("ERROR AL COMUNICARSE CON EL SLAVE");
       return;
     } 
-  delay(1000);   
 }
 
 void loop() 
