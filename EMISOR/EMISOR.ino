@@ -9,7 +9,6 @@ TFMPI2C tfmP;
 ///////////////////////Pines OUTPUT
 #define PIN_SDA 21
 #define PIN_SCL 22
-#define PINLDR 21
 #define LEDB 14
 int VALOR_PINLDR = 0;
 int16_t tfDist = 0;      
@@ -34,7 +33,6 @@ void  ENVIO_DE_DATOS(const uint8_t *mac_addr, esp_now_send_status_t status)
 void setup() 
 {
   Serial.begin(115200);
-  pinMode(PINLDR, INPUT);
   pinMode(LEDB,OUTPUT);
   WiFi.mode(WIFI_STA);
   /////////Iniciamos WiFi del ESP-NOW
